@@ -1,0 +1,12 @@
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+    - name: set A record
+      route53:
+        command: create
+        zone: kikusu.net
+        record: github-jenkins.kikusu.net
+        type: A
+        ttl: 300
+        value: "{{ global_ip }}"
+        overwrite: yes
