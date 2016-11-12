@@ -1,0 +1,22 @@
+- hosts: all
+  user: ec2-user
+  become: yes
+  handlers:
+    - name: restart jenkins
+      service:
+        name: jenkins
+        state: restarted
+  tasks:
+    - name: install jenkins plugin
+      jenkins_plugin:
+        name: "{{ item }}"
+        params:
+          url_username: "{{ jenkins_user }}"
+          url_password: "{{ jenkins_pass }}"
+      with_items:
+        - ansicolor
+        - buildtriggerbadge
+        - ghprb
+        - rebuild
+        - slack
+      notify: restart jenkins

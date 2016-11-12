@@ -1,0 +1,35 @@
+- name: install java
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - java-1.8.0-openjdk
+    - java-1.8.0-openjdk-headless
+
+- name: install Development Tools
+  yum:
+    name: '@Development Tools'
+
+- name: add jenkins yum repository
+  yum_repository:
+    name: jenkins
+    description: Jenkins
+    baseurl: http://pkg.jenkins.io/redhat-stable
+    enabled: yes
+    gpgcheck: yes
+    gpgkey: https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+
+- name: install jenkins
+  yum:
+    name: jenkins
+
+- name: add docker group
+  user:
+    name: jenkins
+    append: yes
+    groups: docker
+  notify: restart docker
+
+- service:
+    name: jenkins
+    state: started
+    enabled: yes

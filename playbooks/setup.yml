@@ -1,0 +1,7 @@
+- hosts: all
+  user: ec2-user
+  become: yes
+  roles:
+    - install_docker
+    - install_jenkins
+    - install_update_dns_script
